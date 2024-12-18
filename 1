@@ -1,0 +1,57 @@
+<script>
+        document.getElementById('phoneForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const phoneInput = document.getElementById('phoneNumber');
+            const errorMessage = document.getElementById('errorMessage');
+            const phoneNumber = phoneInput.value.trim();
+
+            // Clear previous error
+            errorMessage.textContent = '';
+            phoneInput.style.borderColor = '';
+
+            // Validation function for UK phone numbers
+            function validateUKPhoneNumber(number) {
+                // Remove all spaces and dashes
+                const cleanNumber = number.replace(/[\s-]/g, '');
+
+                // UK phone number regex patterns
+                const patterns = [
+                    // Standard mobile numbers (starting with 07)
+                    /^07\d{9}$/,
+                    
+                    // Landline numbers (starting with 02, 03, 01)
+                    /^0[1-3]\d{9}$/,
+                    
+                    // International format with country code
+                    /^\+44\d{10}$/,
+                    /^\+44\s?\d{10}$/,
+                    
+                    // Mobile numbers with +44 prefix
+                    /^\+447\d{9}$/,
+                    
+                    // Various alternative formats with spaces or dashes
+                    /^07\s?\d{3}\s?\d{3}\s?\d{3}$/,
+                    /^0[1-3]\s?\d{4}\s?\d{3}\s?\d{3}$/
+                ];
+
+                return patterns.some(pattern => pattern.test(cleanNumber));
+            }
+
+            // Validate phone number
+            if (!phoneNumber) {
+                errorMessage.textContent = 'Phone number is required.';
+                phoneInput.style.borderColor = 'red';
+                return;
+            }
+
+            if (!validateUKPhoneNumber(phoneNumber)) {
+                errorMessage.textContent = 'Please enter a valid UK phone number.';
+                phoneInput.style.borderColor = 'red';
+                return;
+            }
+
+            // If validation passes
+            alert('Phone number is valid!');
+            phoneInput.style.borderColor = 'green';
+        });
+    </script>
